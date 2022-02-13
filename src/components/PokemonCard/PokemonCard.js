@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 const PokeCard = styled.div`
   display: flex;
@@ -21,15 +22,20 @@ const PokeCard = styled.div`
   }
 `;
 
-const PokemonCard = ({ name, owned }) => (
-  <PokeCard>
-    <p>{name}</p>
-    <p>
-      Owned:
-      {owned}
-    </p>
-  </PokeCard>
-);
+const PokemonCard = ({ name, owned }) => {
+  const navigate = useNavigate();
+
+  const navigateToDetail = () => navigate('/detail/1');
+  return (
+    <PokeCard onClick={navigateToDetail}>
+      <p>{name}</p>
+      <p>
+        Owned:
+        {owned}
+      </p>
+    </PokeCard>
+  );
+};
 
 PokemonCard.propTypes = {
   name: PropTypes.string.isRequired,
