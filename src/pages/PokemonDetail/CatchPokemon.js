@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import propTypes from 'prop-types';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { usePokemonContext } from '../../utils/PokemonContext';
 
 const Button = styled.button`
   width: 100%;
@@ -22,19 +24,31 @@ const TextField = styled.input`
 `;
 
 const CatchPokemon = ({ photo }) => {
+  const { dispatch } = usePokemonContext();
   const [catching, setCatching] = React.useState(true);
   const [catched, setCatched] = React.useState(false);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     setTimeout(() => {
       setCatching(false);
       if (Math.random() > 0.5) {
         setCatched(true);
+        dispatch({
+          type: 'CATCH',
+          payload: {
+            name: 'My Pokemon 1',
+            nickname: 'Custom Name',
+            type: 'Fire',
+          },
+        });
       } else {
         setCatched(false);
       }
     }, 2000);
   }, []);
+
+  const navigateToList = () => navigate('/');
 
   return (
     <div>
@@ -50,7 +64,10 @@ const CatchPokemon = ({ photo }) => {
       )}
 
       {(!catched && !catching) && (
-        <h1>Failed to Catch Pokemon</h1>
+        <>
+          <h1>Failed to Catch Pokemon</h1>
+          <Button onClick={navigateToList}>Search Another Pokemon</Button>
+        </>
       )}
 
     </div>
