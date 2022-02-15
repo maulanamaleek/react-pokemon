@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import propTypes from 'prop-types';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usePokemonContext } from '../../utils/PokemonContext';
+import { usePokemonContext } from '../../contexts/PokemonContext';
 
 const Button = styled.button`
   width: 100%;
@@ -23,10 +23,11 @@ const TextField = styled.input`
   margin-bottom: 10px;
 `;
 
-const CatchPokemon = ({ photo }) => {
+const CatchPokemon = ({ photo, id }) => {
   const { dispatch } = usePokemonContext();
   const [catching, setCatching] = React.useState(true);
   const [catched, setCatched] = React.useState(false);
+  const [nickname, setNickname] = React.useState('');
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -34,14 +35,6 @@ const CatchPokemon = ({ photo }) => {
       setCatching(false);
       if (Math.random() > 0.5) {
         setCatched(true);
-        dispatch({
-          type: 'CATCH',
-          payload: {
-            name: 'My Pokemon 1',
-            nickname: 'Custom Name',
-            type: 'Fire',
-          },
-        });
       } else {
         setCatched(false);
       }
@@ -49,6 +42,19 @@ const CatchPokemon = ({ photo }) => {
   }, []);
 
   const navigateToList = () => navigate('/');
+
+  const savePokemon = () => {
+    dispatch({
+      type: 'CATCH',
+      payload: {
+        name: 'My Pokemon 1',
+        nickname,
+        type: 'Fire',
+        id,
+      },
+    });
+    setNickname('');
+  };
 
   return (
     <div>
@@ -58,8 +64,8 @@ const CatchPokemon = ({ photo }) => {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h2>You got a Pokemon</h2>
           <img src={photo} alt="Your Pokemon" />
-          <TextField placeholder="Set Nickname" />
-          <Button type="button">Save</Button>
+          <TextField placeholder="Set Nickname" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+          <Button onClick={savePokemon}>Save</Button>
         </div>
       )}
 
@@ -76,6 +82,7 @@ const CatchPokemon = ({ photo }) => {
 
 CatchPokemon.propTypes = {
   photo: propTypes.string.isRequired,
+  id: propTypes.string.isRequired,
 };
 
 export default CatchPokemon;
