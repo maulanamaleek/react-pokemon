@@ -1,19 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/react-hooks';
+import { usePokemonContext } from '../../contexts/PokemonContext';
+import { GET_POKEMON } from '../../graphql/gql';
 import PokemonDetailCard from '../../components/PokemonDetailCard/PokemonDetailCard';
 import CatchPokemon from './CatchPokemon';
 
 const PokemonDetail = () => {
   const [catching, setCatching] = React.useState(false);
+  // const [loading, setLoading] = React.useState(true);
+  const { state, dispatch } = usePokemonContext();
+  const { id } = useParams();
+  const { data } = useQuery(GET_POKEMON, {
+    variables: { id },
+  });
 
-  const detail = {
-    name: 'Charizard',
-    type: 'Fire',
-    description: 'Charizard is a fire pokemon',
-    photo: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png',
-    moves: [1, 2, 3],
-  };
+  useEffect(() => {
+    // setTimeout(() => {
+    // if (data) {
+    console.log(data);
+    dispatch({
+      type: 'POKEMON_DETAIL',
+      payload: data?.pokemon_v2_pokemon,
+    });
+    // }
+    // }, 2000);
+  }, [data]);
 
-  if (catching) return <CatchPokemon photo={detail.photo} />;
+  if (catching) {
+    return (
+      <CatchPokemon
+        id={state?.selectedPokemon?.id}
+        photo={state?.selectedPokemon?.photo}
+        name={state?.selectedPokemon?.name}
+      />
+    );
+  }
 
   return (
     <div style={{
@@ -24,14 +46,16 @@ const PokemonDetail = () => {
       width: '90vw',
     }}
     >
-      <PokemonDetailCard
-        name={detail.name}
-        type={detail.type}
-        description={detail.description}
-        photo={detail.photo}
-        moves={detail.moves}
-        onCatch={setCatching}
-      />
+      {state?.selectedPokemon?.types && (
+        <PokemonDetailCard
+          name={state?.selectedPokemon.name}
+          types={state?.selectedPokemon.types}
+          photo={state?.selectedPokemon.photo}
+          moves={state?.selectedPokemon.moves}
+          onCatch={setCatching}
+        />
+      )}
+
     </div>
   );
 };

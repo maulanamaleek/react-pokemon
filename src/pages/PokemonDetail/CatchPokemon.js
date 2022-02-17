@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import propTypes from 'prop-types';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usePokemonContext } from '../../utils/PokemonContext';
+import { usePokemonContext } from '../../contexts/PokemonContext';
 
 const Button = styled.button`
   width: 100%;
@@ -23,10 +23,18 @@ const TextField = styled.input`
   margin-bottom: 10px;
 `;
 
-const CatchPokemon = ({ photo }) => {
+const PokeBall = styled.img`
+  width: 100%;
+  height: 40%;
+  object-fit: cover;
+  margin: auto;
+`;
+
+const CatchPokemon = ({ photo, id, name }) => {
   const { dispatch } = usePokemonContext();
   const [catching, setCatching] = React.useState(true);
   const [catched, setCatched] = React.useState(false);
+  const [nickname, setNickname] = React.useState('');
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -34,32 +42,38 @@ const CatchPokemon = ({ photo }) => {
       setCatching(false);
       if (Math.random() > 0.5) {
         setCatched(true);
-        dispatch({
-          type: 'CATCH',
-          payload: {
-            name: 'My Pokemon 1',
-            nickname: 'Custom Name',
-            type: 'Fire',
-          },
-        });
       } else {
         setCatched(false);
       }
-    }, 2000);
+    }, 3000);
   }, []);
 
   const navigateToList = () => navigate('/');
 
+  const savePokemon = () => {
+    dispatch({
+      type: 'CATCH',
+      payload: {
+        name,
+        nickname: nickname || name,
+        type: 'Fire',
+        id,
+      },
+    });
+    setNickname('');
+    navigate('/collection');
+  };
+
   return (
     <div>
-      {catching && <h2>Catching...</h2>}
+      {catching && <PokeBall src="/assets/catch.gif" alt="Catching..." />}
 
       {(catched && !catching) && (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h2>You got a Pokemon</h2>
           <img src={photo} alt="Your Pokemon" />
-          <TextField placeholder="Set Nickname" />
-          <Button type="button">Save</Button>
+          <TextField placeholder="Set Nickname" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+          <Button onClick={savePokemon}>Save</Button>
         </div>
       )}
 
@@ -76,6 +90,8 @@ const CatchPokemon = ({ photo }) => {
 
 CatchPokemon.propTypes = {
   photo: propTypes.string.isRequired,
+  id: propTypes.number.isRequired,
+  name: propTypes.string.isRequired,
 };
 
 export default CatchPokemon;

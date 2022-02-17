@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useEffect } from 'react';
 import CollectionCard from '../../components/CollectionCard/CollectionCard';
-import { usePokemonContext } from '../../utils/PokemonContext';
+import { usePokemonContext } from '../../contexts/PokemonContext';
 
 const CardList = styled.div`
   display: grid;
@@ -10,12 +10,18 @@ const CardList = styled.div`
 `;
 
 const Collection = () => {
-  const { state } = usePokemonContext();
+  const { state, dispatch } = usePokemonContext();
+
+  useEffect(() => {
+    dispatch({
+      type: 'GET_COLLECTION',
+    });
+  }, []);
 
   return (
     <CardList>
       {state.collection.map((collection) => (
-        <CollectionCard key={collection.name} pokemon={collection} />
+        <CollectionCard key={collection.id} pokemon={collection} />
       ))}
     </CardList>
   );

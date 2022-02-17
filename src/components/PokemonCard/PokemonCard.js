@@ -22,10 +22,10 @@ const PokeCard = styled.div`
   }
 `;
 
-const PokemonCard = ({ name, owned }) => {
+const PokemonCard = ({ name, owned, id }) => {
   const navigate = useNavigate();
 
-  const navigateToDetail = () => navigate('/detail/1');
+  const navigateToDetail = () => navigate(`/detail/${id}`);
   return (
     <PokeCard onClick={navigateToDetail}>
       <p>{name}</p>
@@ -40,6 +40,7 @@ const PokemonCard = ({ name, owned }) => {
 PokemonCard.propTypes = {
   name: PropTypes.string.isRequired,
   owned: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 export default PokemonCard;
