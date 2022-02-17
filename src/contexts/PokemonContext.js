@@ -14,6 +14,7 @@ const initialState = {
   ],
   collection: [],
   selectedPokemon: {},
+  loading: true,
 };
 
 const PokemonReducer = (state, action) => {
@@ -30,22 +31,14 @@ const PokemonReducer = (state, action) => {
         return newPokemon;
       });
 
-      // console.log(newPokemonList);
       return {
         ...state,
         pokemonList: newPokemonList,
       };
     }
     case 'POKEMON_DETAIL': {
-      // console.log('the payload', action.payload);
       const newSelected = action?.payload;
-      // let formattedPokemon;
-      if (!newSelected) {
-        return state;
-        // break;
-      }
-
-      // const selected = newSelected?.map((pokemon) => pokemon);
+      if (!newSelected) return state;
 
       const formattedPokemon = {
         name: newSelected[0]?.name,
@@ -55,7 +48,6 @@ const PokemonReducer = (state, action) => {
         photo: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${newSelected[0]?.id}.png`,
       };
 
-      console.log('formatted', newSelected, formattedPokemon);
       return {
         ...state,
         selectedPokemon: formattedPokemon,
@@ -78,6 +70,14 @@ const PokemonReducer = (state, action) => {
       return {
         ...state,
         collection: localCollection || state.collection,
+      };
+    }
+    case 'LOADING': {
+      const isLoading = action.payload;
+
+      return {
+        ...state,
+        loading: isLoading,
       };
     }
     default:

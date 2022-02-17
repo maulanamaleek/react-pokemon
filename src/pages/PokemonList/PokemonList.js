@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import { usePokemonContext } from '../../contexts/PokemonContext';
 import { GET_POKEMON_LIST } from '../../graphql/gql';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const PokemonList = () => {
   const { state, dispatch } = usePokemonContext();
@@ -15,7 +16,14 @@ const PokemonList = () => {
       type: 'GET_POKEMON',
       payload: data?.pokemon_v2_pokemonspecies,
     });
+
+    dispatch({
+      type: 'LOADING',
+      payload: false,
+    });
   }, [data]);
+
+  if (!data) return <LoadingSpinner />;
 
   return (
     <div style={{ paddingBottom: 80 }}>
