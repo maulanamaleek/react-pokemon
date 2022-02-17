@@ -5,10 +5,10 @@ import { usePokemonContext } from '../../contexts/PokemonContext';
 import { GET_POKEMON } from '../../graphql/gql';
 import PokemonDetailCard from '../../components/PokemonDetailCard/PokemonDetailCard';
 import CatchPokemon from './CatchPokemon';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const PokemonDetail = () => {
   const [catching, setCatching] = React.useState(false);
-  // const [loading, setLoading] = React.useState(true);
   const { state, dispatch } = usePokemonContext();
   const { id } = useParams();
   const { data } = useQuery(GET_POKEMON, {
@@ -16,16 +16,13 @@ const PokemonDetail = () => {
   });
 
   useEffect(() => {
-    // setTimeout(() => {
-    // if (data) {
-    console.log(data);
     dispatch({
       type: 'POKEMON_DETAIL',
       payload: data?.pokemon_v2_pokemon,
     });
-    // }
-    // }, 2000);
   }, [data]);
+
+  if (!data) return <LoadingSpinner />;
 
   if (catching) {
     return (
@@ -33,6 +30,7 @@ const PokemonDetail = () => {
         id={state?.selectedPokemon?.id}
         photo={state?.selectedPokemon?.photo}
         name={state?.selectedPokemon?.name}
+        types={state?.selectedPokemon.types}
       />
     );
   }
@@ -42,8 +40,6 @@ const PokemonDetail = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '100vh',
-      width: '90vw',
     }}
     >
       {state?.selectedPokemon?.types && (

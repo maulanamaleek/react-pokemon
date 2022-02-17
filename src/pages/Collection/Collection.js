@@ -19,11 +19,15 @@ const Collection = () => {
   }, []);
 
   return (
-    <CardList>
-      {state.collection.map((collection) => (
-        <CollectionCard key={collection.id} pokemon={collection} />
-      ))}
-    </CardList>
+    <>
+      <CardList>
+        {state.collection.map((collection) => (
+          <CollectionCard key={collection.id} pokemon={collection} />
+        ))}
+
+      </CardList>
+      {!state.collection.length && <h2 style={{ marginTop: 200 }}>Catch your pokemon...</h2>}
+    </>
   );
 };
 
