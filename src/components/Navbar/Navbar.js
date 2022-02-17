@@ -4,14 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 const FloatingNavbar = styled.nav`
   position: fixed;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 0px;
+  left: 0px;
   height: 60px;
-  border-radius: 30px;
   background-color: white;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.07);
-  width: 90vw;
+  box-shadow: 0px -2px 20px rgba(0, 0, 0, 0.07);
+  width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;

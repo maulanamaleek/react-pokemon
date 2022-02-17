@@ -23,6 +23,13 @@ const TextField = styled.input`
   margin-bottom: 10px;
 `;
 
+const PokeBall = styled.img`
+  width: 100%;
+  height: 40%;
+  object-fit: cover;
+  margin: auto;
+`;
+
 const CatchPokemon = ({ photo, id, name }) => {
   const { dispatch } = usePokemonContext();
   const [catching, setCatching] = React.useState(true);
@@ -38,7 +45,7 @@ const CatchPokemon = ({ photo, id, name }) => {
       } else {
         setCatched(false);
       }
-    }, 2000);
+    }, 3000);
   }, []);
 
   const navigateToList = () => navigate('/');
@@ -48,17 +55,18 @@ const CatchPokemon = ({ photo, id, name }) => {
       type: 'CATCH',
       payload: {
         name,
-        nickname,
+        nickname: nickname || name,
         type: 'Fire',
         id,
       },
     });
     setNickname('');
+    navigate('/collection');
   };
 
   return (
     <div>
-      {catching && <h2>Catching...</h2>}
+      {catching && <PokeBall src="/assets/catch.gif" alt="Catching..." />}
 
       {(catched && !catching) && (
         <div style={{ display: 'flex', flexDirection: 'column' }}>

@@ -18,7 +18,8 @@ const PokemonList = () => {
   }, [data]);
 
   return (
-    <div>
+    <div style={{ paddingBottom: 80 }}>
+      <h2>Pokemon List</h2>
       {state?.pokemonList?.map((pokemon) => (
         <PokemonCard
           name={pokemon.name}

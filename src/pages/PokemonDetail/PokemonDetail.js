@@ -27,11 +27,6 @@ const PokemonDetail = () => {
     // }, 2000);
   }, [data]);
 
-  // if (data && loading) {
-  //   dispatch({ type: 'POKEMON_DETAIL', payload: data.pokemon_v2_pokemon });
-  //   setLoading(false);
-  // }
-
   if (catching) {
     return (
       <CatchPokemon
@@ -51,12 +46,10 @@ const PokemonDetail = () => {
       width: '90vw',
     }}
     >
-
       {state?.selectedPokemon?.types && (
         <PokemonDetailCard
           name={state?.selectedPokemon.name}
           types={state?.selectedPokemon.types}
-          // description={state?.selectedPokemon.description}
           photo={state?.selectedPokemon.photo}
           moves={state?.selectedPokemon.moves}
           onCatch={setCatching}
