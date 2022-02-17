@@ -21,7 +21,7 @@ const Collection = () => {
   return (
     <CardList>
       {state.collection.map((collection) => (
-        <CollectionCard key={collection.name} pokemon={collection} />
+        <CollectionCard key={collection.id} pokemon={collection} />
       ))}
     </CardList>
   );

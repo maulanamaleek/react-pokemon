@@ -23,7 +23,7 @@ const TextField = styled.input`
   margin-bottom: 10px;
 `;
 
-const CatchPokemon = ({ photo, id }) => {
+const CatchPokemon = ({ photo, id, name }) => {
   const { dispatch } = usePokemonContext();
   const [catching, setCatching] = React.useState(true);
   const [catched, setCatched] = React.useState(false);
@@ -47,7 +47,7 @@ const CatchPokemon = ({ photo, id }) => {
     dispatch({
       type: 'CATCH',
       payload: {
-        name: 'My Pokemon 1',
+        name,
         nickname,
         type: 'Fire',
         id,
@@ -82,7 +82,8 @@ const CatchPokemon = ({ photo, id }) => {
 
 CatchPokemon.propTypes = {
   photo: propTypes.string.isRequired,
-  id: propTypes.string.isRequired,
+  id: propTypes.number.isRequired,
+  name: propTypes.string.isRequired,
 };
 
 export default CatchPokemon;

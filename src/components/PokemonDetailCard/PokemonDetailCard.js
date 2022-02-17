@@ -1,6 +1,7 @@
 import propTypes from 'prop-types';
 import React from 'react';
 import styled from '@emotion/styled';
+import { v4 as uuidv4 } from 'uuid';
 
 const PokeCardDetail = styled.div`
   padding: 12px 10px;
@@ -22,22 +23,30 @@ const ButtonCatch = styled.button`
 `;
 
 const PokemonDetailCard = ({
-  name, type, photo, description, onCatch,
+  name, types, photo, moves, onCatch,
 }) => (
   <PokeCardDetail>
-    <h2>{name}</h2>
-    <p>{type}</p>
+    <h2>{name.toUpperCase()}</h2>
+    {types?.map((type) => <span key={uuidv4()}>{type.pokemon_v2_type.name}</span>)}
+    {moves?.map((move) => <span key={uuidv4()}>{move.pokemon_v2_move.name}</span>)}
     <img src={photo} alt={name} />
-    <p>{description}</p>
     <ButtonCatch onClick={() => onCatch(true)}>Catch</ButtonCatch>
   </PokeCardDetail>
 );
 
 PokemonDetailCard.propTypes = {
   name: propTypes.string.isRequired,
-  type: propTypes.string.isRequired,
+  types: propTypes.arrayOf(propTypes.shape({
+    pokemon_v2_type: propTypes.shape({
+      name: propTypes.string.isRequired,
+    }).isRequired,
+  })).isRequired,
+  moves: propTypes.arrayOf(propTypes.shape({
+    pokemon_v2_move: propTypes.shape({
+      name: propTypes.string.isRequired,
+    }),
+  })).isRequired,
   photo: propTypes.string.isRequired,
-  description: propTypes.string.isRequired,
   onCatch: propTypes.func.isRequired,
 };
 
